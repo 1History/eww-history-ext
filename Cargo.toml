@@ -1,0 +1,12 @@
+[package]
+name = "onehistory-emacs"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+emacs = "0.18"
+rusqlite = { version = "0.26.3", features = ["bundled"] }
+anyhow = { version = "1.0" }
