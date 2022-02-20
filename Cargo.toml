@@ -1,7 +1,9 @@
 [package]
-name = "onehistory-emacs"
+name = "onehistory"
 version = "0.1.0"
+authors = ["Jiacai Liu <jiacai2050@gmail.com>"]
 edition = "2021"
+publish = false
 
 [lib]
 crate-type = ["cdylib"]
@@ -10,3 +12,11 @@ crate-type = ["cdylib"]
 emacs = "0.18"
 rusqlite = { version = "0.26.3", features = ["bundled"] }
 anyhow = { version = "1.0" }
+
+[dev-dependencies]
+tempdir = "0.3"
+
+[profile.release]
+# only in nightly now
+# strip = true
+lto = true
