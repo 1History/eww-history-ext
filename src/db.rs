@@ -124,7 +124,7 @@ ON CONFLICT (url)
     }
 
     pub fn query_inner(&self, sql: &str, start: i64, end: i64) -> Result<Histories> {
-        let mut stat = self.conn.prepare(&sql)?;
+        let mut stat = self.conn.prepare(sql)?;
         let rows = stat.query_map(
             named_params! {
                 ":start": start,
@@ -186,7 +186,7 @@ SELECT
 FROM
     onehistory_emacs_visits_view
 WHERE
-    {}
+    visit_time BETWEEN :start AND :end and {}
 ORDER BY
     visit_time
 LIMIT {}
