@@ -21,3 +21,25 @@ This command will output =onehistory-dyn.so= file in current directory, which we
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "/path/to/onehistory-emacs")
 #+END_SRC
+
+* Development
+- [[https://ubolonton.github.io/emacs-module-rs/latest/reloading.html][Live Reloading - emacs-module-rs 0.18]]
+#+BEGIN_SRC emacs-lisp
+;;; 加载热启动模块
+(module-load "/tmp/emacs-module-rs/target/debug/libemacs_rs_module.dylib")
+(require 'rs-module)
+
+;;; 重启加载 so 文件
+(rs-module/load "/tmp/onehistory-emacs/target/debug/onehistory-dyn.so")
+
+;;; 查询最新历史数据
+(setq onehistory-db nil)
+(onehistory-query-latest)
+#+END_SRC
+
+* Plan
+- Display history ::
+  - [[https://stackoverflow.com/questions/11272632/how-to-create-a-column-view-in-emacs-lisp][How to create a column view in Emacs Lisp? - Stack Overflow]]
+  - [[https://github.com/Silex/docker.el/blob/master/docker-container.el#L66][docker.el/docker-container.el at master · Silex/docker.el]]
+  - [[https://vallyscode.github.io/posts/tabulated-list-mode/][vally's code | Emacs tabulated list mode]]
+  - [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Tabulated-List-Mode.html][23.2.7 Tabulated List mode]]

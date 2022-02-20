@@ -7,6 +7,7 @@ use rusqlite::{named_params, Connection};
 use crate::util::get_epoch_ms;
 
 pub struct VisitDetail {
+    pub id: i64,
     pub url: String,
     pub title: String,
     pub visit_count: i64,
@@ -15,12 +16,13 @@ pub struct VisitDetail {
 
 impl<'e> IntoLisp<'_> for VisitDetail {
     fn into_lisp(self, env: &Env) -> Result<Value<'_>> {
-        env.vector((
+        let detail = env.vector((
             self.url,
             self.title,
             // visit_count not used now
             env.call("seconds-to-time", (self.visit_time / 1000,))?,
-        ))
+        ))?;
+        env.list((self.id, detail))
     }
 }
 
@@ -70,6 +72,7 @@ CREATE TABLE IF NOT EXISTS onehistory_emacs_visits (
 
 CREATE VIEW IF NOT EXISTS onehistory_emacs_visits_view AS
 SELECT
+    v.id,
     url,
     title,
     visit_count,
@@ -133,10 +136,11 @@ ON CONFLICT (url)
             },
             |row| {
                 let detail = VisitDetail {
-                    url: row.get(0)?,
-                    title: row.get(1).unwrap_or_else(|_| "".to_string()),
-                    visit_count: row.get(2)?,
-                    visit_time: row.get(3)?,
+                    id: row.get(0)?,
+                    url: row.get(1)?,
+                    title: row.get(2).unwrap_or_else(|_| "".to_string()),
+                    visit_count: row.get(3)?,
+                    visit_time: row.get(4)?,
                 };
                 Ok(detail)
             },
@@ -159,6 +163,7 @@ ON CONFLICT (url)
         let sql = format!(
             r#"
 SELECT
+    id,
     url,
     title,
     visit_count,
@@ -179,6 +184,7 @@ ORDER BY
         let sql = format!(
             r#"
 SELECT
+    id,
     url,
     title,
     visit_count,
