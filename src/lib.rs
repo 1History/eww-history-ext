@@ -25,21 +25,17 @@ fn save_history(db: &Database, url: String, title: String) -> Result<()> {
 }
 
 #[defun]
-fn query_histories<'a>(
+fn query_histories_by_range(
     db: &Database,
-    start: i64,
-    end: i64,
+    start_secs: i64,
+    end_secs: i64,
     keyword: Option<String>,
 ) -> Result<Histories> {
-    db.query_histories(start, end, keyword)
+    db.query_histories(1000 * start_secs, 1000 * end_secs, keyword)
 }
 
 #[defun]
-fn query_latest_histories<'a>(
-    db: &Database,
-    limit: i64,
-    keyword: Option<String>,
-) -> Result<Histories> {
+fn query_latest_histories(db: &Database, limit: i64, keyword: Option<String>) -> Result<Histories> {
     db.query_latest_histories(limit, keyword)
 }
 

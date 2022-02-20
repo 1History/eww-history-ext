@@ -1,8 +1,11 @@
 
+SRC = libonehistory_emacs.dylib
+DST = onehistory-dyn.so
+
 dev:
 	cargo build
-	cd target/debug && ln -sf libonehistory.dylib onehistory-dyn.so
+	cd target/debug && ln -sf $(SRC) $(DST)
 
 release:
-	cargo build --release
-	cd target/release && ln -sf libonehistory.dylib onehistory-dyn.so
+	# cargo build --release
+	cp target/release/$(SRC) $(DST)
