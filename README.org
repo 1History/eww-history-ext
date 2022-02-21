@@ -32,6 +32,8 @@ This command will output =onehistory-dyn.so= file in current directory, which we
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "/path/to/emacs-onehistory")
 #+END_SRC
+* Screenshots
+[[file:screenshots/list.png]]
 * Development
 - [[https://ubolonton.github.io/emacs-module-rs/latest/reloading.html][Live Reloading - emacs-module-rs 0.18]]
 #+BEGIN_SRC emacs-lisp
