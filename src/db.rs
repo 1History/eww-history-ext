@@ -11,18 +11,20 @@ pub struct VisitDetail {
     pub url: String,
     pub title: String,
     pub visit_count: i64,
-    pub visit_time: i64,
+    // YYYY-MM-DD HH:MM:SS
+    pub visit_time: String,
 }
 
 impl<'e> IntoLisp<'_> for VisitDetail {
     fn into_lisp(self, env: &Env) -> Result<Value<'_>> {
         let detail = env.vector((
-            self.url,
+            // env.call("seconds-to-time", (self.visit_time / 1000,))?,
+            self.visit_time,
             self.title,
+            self.url,
             // visit_count not used now
-            env.call("seconds-to-time", (self.visit_time / 1000,))?,
         ))?;
-        env.list((self.id, detail))
+        env.list((self.id.to_string(), detail))
     }
 }
 
@@ -126,13 +128,37 @@ ON CONFLICT (url)
         Ok(())
     }
 
-    pub fn query_inner(&self, sql: &str, start: i64, end: i64) -> Result<Histories> {
-        let mut stat = self.conn.prepare(sql)?;
+    fn query_inner(
+        &self,
+        start: i64,
+        end: i64,
+        limit: Option<i64>,
+        keyword: Option<String>,
+    ) -> Result<Histories> {
+        let sql = format!(
+            r#"
+SELECT
+    id,
+    url,
+    title,
+    visit_count,
+    datetime (visit_time / 1000, 'unixepoch', 'localtime')
+FROM
+    onehistory_emacs_visits_view
+WHERE
+    visit_time BETWEEN :start AND :end
+    AND {}
+ORDER BY
+    visit_time desc
+{}"#,
+            Self::keyword_to_like(keyword),
+            limit.map_or_else(|| "".to_string(), |lmt| format!("limit {lmt}"))
+        );
+        let mut stat = self.conn.prepare(&sql)?;
         let rows = stat.query_map(
             named_params! {
                 ":start": start,
                 ":end": end,
-
             },
             |row| {
                 let detail = VisitDetail {
@@ -160,47 +186,11 @@ ON CONFLICT (url)
         end: i64,
         keyword: Option<String>,
     ) -> Result<Histories> {
-        let sql = format!(
-            r#"
-SELECT
-    id,
-    url,
-    title,
-    visit_count,
-    visit_time
-FROM
-    onehistory_emacs_visits_view
-WHERE
-    visit_time BETWEEN :start AND :end and {}
-ORDER BY
-    visit_time
-"#,
-            Self::keyword_to_like(keyword)
-        );
-        self.query_inner(&sql, start, end)
+        self.query_inner(start, end, None, keyword)
     }
 
     pub fn query_latest_histories(&self, limit: i64, keyword: Option<String>) -> Result<Histories> {
-        let sql = format!(
-            r#"
-SELECT
-    id,
-    url,
-    title,
-    visit_count,
-    visit_time
-FROM
-    onehistory_emacs_visits_view
-WHERE
-    visit_time BETWEEN :start AND :end and {}
-ORDER BY
-    visit_time
-LIMIT {}
-"#,
-            Self::keyword_to_like(keyword),
-            limit
-        );
-        self.query_inner(&sql, 0, i64::MAX)
+        self.query_inner(0, i64::MAX, Some(limit), keyword)
     }
 
     fn keyword_to_like(kw: Option<String>) -> String {

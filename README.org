@@ -1,4 +1,13 @@
-* onehistory-emacs
+#+TITLE: Emacs onehistory
+#+DATE: 2022-02-21T11:41:31+0800
+#+AUTHOR: Jiacai Liu
+#+LANGUAGE: cn
+#+EMAIL: jiacai2050+org@gmail.com
+#+OPTIONS: toc:nil num:nil
+#+STARTUP: content
+
+[[https://github.com/1History/emacs-onehistory/actions/workflows/test.yml][https://github.com/1History/emacs-onehistory/actions/workflows/test.yml/badge.svg]]
+
 #+begin_quote
 History solution for Emacs.
 #+end_quote
@@ -7,21 +16,22 @@ Currently supported package:
 - EWW
 - Elfeed
 
-
+* Usage
+#+BEGIN_SRC emacs-lisp
+(setq onehistory-elfeed-integration t) ;; if you use elfeed
+(onehistory-enable)
+#+END_SRC
+After enable onehistory, visit histories of eww and elfeed will be saved into onehistory, you can use =M-x onehistory-list= to browse saved histories.
 * Install
-1. Build so library
-2. Add so to load-path
-3. =M-x onehistory-enable=
-
+Clone this repo, build so library, and add it to load-path:
 #+begin_src bash
 make release
 #+end_src
 This command will output =onehistory-dyn.so= file in current directory, which we can add it to =load-path=
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "/path/to/onehistory-emacs")
+(add-to-list 'load-path "/path/to/emacs-onehistory")
 #+END_SRC
-
 * Development
 - [[https://ubolonton.github.io/emacs-module-rs/latest/reloading.html][Live Reloading - emacs-module-rs 0.18]]
 #+BEGIN_SRC emacs-lisp
@@ -30,7 +40,7 @@ This command will output =onehistory-dyn.so= file in current directory, which we
 (require 'rs-module)
 
 ;;; 重启加载 so 文件
-(rs-module/load "/tmp/onehistory-emacs/target/debug/onehistory-dyn.so")
+(rs-module/load "/tmp/emacs-onehistory/onehistory-dyn.so")
 
 ;;; 查询最新历史数据
 (setq onehistory-db nil)

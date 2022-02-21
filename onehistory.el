@@ -11,6 +11,8 @@
 ;;; Code:
 
 (require 'onehistory-dyn)
+(require 'tabulated-list)
+(require 'seq)
 
 (defcustom onehistory-db-file (expand-file-name "onehistory.db" user-emacs-directory)
   "File where onehistory will store its database."
@@ -34,6 +36,14 @@
 
 (defvar onehistory-db nil
   "The core database for elfeed.")
+
+(defvar onehistory-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map tabulated-list-mode-map)
+    (define-key map (kbd "RET") 'onehistory-browse-history)
+    (define-key map (kbd "w") 'onehistory-copy-history-url)
+    map)
+  "Local keymap for onehistory mode buffers.")
 
 (defun onehistory-db-ensure ()
   (when (null onehistory-db)
@@ -97,6 +107,48 @@
   (when onehistory-elfeed-integration
     (advice-remove 'elfeed-search-show-entry
                    'onehistory-elfeed-search-show-entry-around)))
+
+(defun onehistory--get-url ()
+  (when-let ((entry (tabulated-list-get-entry)))
+     (aref entry 2)))
+
+(defun onehistory-browse-history ()
+  "Browse history at point."
+  (interactive)
+  (if-let ((url (onehistory--get-url)))
+      (browse-url url)
+    (user-error "There is no history at point")))
+
+(defun onehistory-copy-history-url ()
+  "Copy history URL at point."
+  (interactive)
+  (if-let ((url (onehistory--get-url)))
+      (progn
+        (message "%s copied" url)
+        (kill-new url))
+    (user-error "There is no history at point")))
+
+(define-derived-mode onehistory-mode tabulated-list-mode "onehistory" "History solution for Emacs"
+  (setq tabulated-list-format [("Time" 20 t)
+                               ("Title" 50 nil)
+                               ("Location" 100 nil)])
+  (setq tabulated-list-padding 2)
+  (setq tabulated-list-sort-key (cons "Time" t))
+  (tabulated-list-init-header))
+
+;;;###autoload
+(defun onehistory-list ()
+  "Display histories as table list"
+  (interactive)
+  (with-current-buffer (get-buffer-create "*onehistory*")
+    (onehistory-mode)
+    (setq tabulated-list-entries
+          (lambda ()
+            (seq-into
+             (onehistory-query-latest)
+             'list)))
+    (tabulated-list-print)
+    (switch-to-buffer (current-buffer))))
 
 (provide 'onehistory)
 

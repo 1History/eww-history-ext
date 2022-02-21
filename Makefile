@@ -4,8 +4,8 @@ DST = onehistory-dyn.so
 
 dev:
 	cargo build
-	cd target/debug && ln -sf $(SRC) $(DST)
+	ln -sf target/debug/$(SRC) $(DST)
 
 release:
-	# cargo build --release
+	cargo build --release
 	cp target/release/$(SRC) $(DST)
