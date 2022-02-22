@@ -18,10 +18,6 @@ Currently supported package:
 
 * Usage
 #+BEGIN_SRC emacs-lisp
-(setq onehistory-elfeed-integration t) ;; if you use elfeed
-(onehistory-enable)
-
-;; use-package config demo
 (use-package onehistory
   :load-path "~/emacs-onehistory"
   :custom ((onehistory-elfeed-integration t))
@@ -55,10 +51,3 @@ This command will output =onehistory-dyn.so= file in current directory, which we
 (setq onehistory-db nil)
 (onehistory-query-latest)
 #+END_SRC
-
-* Plan
-- Display history ::
-  - [[https://stackoverflow.com/questions/11272632/how-to-create-a-column-view-in-emacs-lisp][How to create a column view in Emacs Lisp? - Stack Overflow]]
-  - [[https://github.com/Silex/docker.el/blob/master/docker-container.el#L66][docker.el/docker-container.el at master · Silex/docker.el]]
-  - [[https://vallyscode.github.io/posts/tabulated-list-mode/][vally's code | Emacs tabulated list mode]]
-  - [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Tabulated-List-Mode.html][23.2.7 Tabulated List mode]]
