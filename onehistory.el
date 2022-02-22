@@ -33,12 +33,18 @@
   "Default keyword for query history"
   :group 'onehistory
   :type '(choice (const :tag "Don't set" nil)
-                 (string :tag "Query keyword")))
+                 (string :tag "Keyword"))
+  :set (lambda (name value)
+         (custom-set-default name value)
+         (setq onehistory-query-keyword value)))
 
 (defcustom onehistory-default-query-limit 1000
   "Default limit for query history"
   :group 'onehistory
-  :type 'number)
+  :type 'integer
+  :set (lambda (name value)
+         (custom-set-default name value)
+         (setq onehistory-query-limit value)))
 
 (defvar onehistory-db nil
   "The core database for elfeed.")
@@ -125,11 +131,11 @@
 
 (defun onehistory--get-url ()
   (when-let ((entry (tabulated-list-get-entry)))
-     (aref entry 2)))
+    (aref entry 2)))
 
 (defun onehistory--get-title ()
   (when-let ((entry (tabulated-list-get-entry)))
-     (aref entry 1)))
+    (aref entry 1)))
 
 (defun onehistory-browse-history ()
   "Browse history at point."
