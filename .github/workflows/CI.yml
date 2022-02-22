@@ -1,10 +1,10 @@
-name: unit test
+name: CI
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - src
+      - 'src/**'
 
 jobs:
   build:

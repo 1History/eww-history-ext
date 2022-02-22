@@ -6,7 +6,7 @@
 #+OPTIONS: toc:nil num:nil
 #+STARTUP: content
 
-[[https://github.com/1History/emacs-onehistory/actions/workflows/test.yml][https://github.com/1History/emacs-onehistory/actions/workflows/test.yml/badge.svg]]
+[[https://github.com/1History/emacs-onehistory/actions/workflows/CI.yml][https://github.com/1History/emacs-onehistory/actions/workflows/CI.yml/badge.svg]]
 
 #+begin_quote
 History solution for Emacs.

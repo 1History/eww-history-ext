@@ -37,11 +37,16 @@
 (defvar onehistory-db nil
   "The core database for elfeed.")
 
+(defvar onehistory-search-keyword nil
+  "The case-insensitive keyword used when query history.")
+
 (defvar onehistory-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map tabulated-list-mode-map)
     (define-key map (kbd "RET") 'onehistory-browse-history)
     (define-key map (kbd "w") 'onehistory-copy-history-url)
+    (define-key map (kbd "t") 'onehistory-copy-history-title)
+    (define-key map (kbd "s") 'onehistory-search-by-keyword)
     map)
   "Local keymap for onehistory mode buffers.")
 
@@ -55,18 +60,18 @@
                                 url
                                 title))
 
-(defun onehistory-query-by-range (start-time end-time &optional keyword)
+(defun onehistory-query-by-range (start-time end-time)
   (onehistory-db-ensure)
   (onehistory-dyn--query-histories-by-range onehistory-db
                                             (string-to-number (format-time-string "%s" start-time))
                                             (string-to-number (format-time-string "%s" end-time))
-                                            keyword))
+                                            onehistory-search-keyword))
 
-(defun onehistory-query-latest (&optional limit keyword)
+(defun onehistory-query-latest (&optional limit)
   (onehistory-db-ensure)
   (onehistory-dyn--query-latest-histories onehistory-db
                                           (or limit onehistory-latest-history-limit)
-                                          keyword))
+                                          onehistory-search-keyword))
 
 (defun onehistory-eww-hook ()
   (let ((title (plist-get eww-data :title))
@@ -112,6 +117,10 @@
   (when-let ((entry (tabulated-list-get-entry)))
      (aref entry 2)))
 
+(defun onehistory--get-title ()
+  (when-let ((entry (tabulated-list-get-entry)))
+     (aref entry 1)))
+
 (defun onehistory-browse-history ()
   "Browse history at point."
   (interactive)
@@ -124,9 +133,33 @@
   (interactive)
   (if-let ((url (onehistory--get-url)))
       (progn
-        (message "%s copied" url)
+        (message url)
         (kill-new url))
     (user-error "There is no history at point")))
+
+(defun onehistory-copy-history-title ()
+  "Copy history title at point."
+  (interactive)
+  (if-let ((title (onehistory--get-title)))
+      (progn
+        (message title)
+        (kill-new title))
+    (user-error "There is no history at point")))
+
+(defun onehistory-vec-to-list (histories)
+  (seq-into histories 'list))
+
+(defun onehistory-refresh-tabulated-list ()
+  (setq tabulated-list-entries
+        (lambda ()
+          (onehistory-vec-to-list (onehistory-query-latest))))
+  (tabulated-list-print t))
+
+(defun onehistory-search-by-keyword (keyword)
+  (interactive "sKeyword: ")
+  (when (eq major-mode 'onehistory-mode)
+    (setq-local onehistory-search-keyword keyword)
+    (onehistory-refresh-tabulated-list)))
 
 (define-derived-mode onehistory-mode tabulated-list-mode "onehistory" "History solution for Emacs"
   (setq tabulated-list-format [("Time" 20 t)
@@ -146,12 +179,7 @@
   (interactive)
   (with-current-buffer (get-buffer-create "*onehistory*")
     (onehistory-mode)
-    (setq tabulated-list-entries
-          (lambda ()
-            (seq-into
-             (onehistory-query-latest)
-             'list)))
-    (tabulated-list-print)
+    (onehistory-refresh-tabulated-list)
     (switch-to-buffer (current-buffer))))
 
 (provide 'onehistory)
