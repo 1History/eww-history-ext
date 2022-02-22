@@ -58,7 +58,7 @@ impl Database {
         self.conn
             .execute_batch(
                 r#"
-CREATE TABLE IF NOT EXISTS onehistory_emacs_urls (
+CREATE TABLE IF NOT EXISTS eww_history_urls (
     id integer PRIMARY KEY AUTOINCREMENT,
     url text NOT NULL UNIQUE,
     visit_count integer DEFAULT 1,
@@ -66,14 +66,14 @@ CREATE TABLE IF NOT EXISTS onehistory_emacs_urls (
 );
 
 
-CREATE TABLE IF NOT EXISTS onehistory_emacs_visits (
+CREATE TABLE IF NOT EXISTS eww_history_visits (
     id integer PRIMARY KEY AUTOINCREMENT,
     url_id integer,
     visit_time integer,
     UNIQUE(url_id, visit_time)
 );
 
-CREATE VIEW IF NOT EXISTS onehistory_emacs_visits_view AS
+CREATE VIEW IF NOT EXISTS eww_history_visits_view AS
 SELECT
     v.id,
     url,
@@ -81,8 +81,8 @@ SELECT
     visit_count,
     visit_time
 FROM
-    onehistory_emacs_urls u,
-    onehistory_emacs_visits v ON u.id = v.url_id
+    eww_history_urls u,
+    eww_history_visits v ON u.id = v.url_id
 "#,
             )
             .context("create table")?;
@@ -92,7 +92,7 @@ FROM
     fn get_url_id(&self, url: String, title: String) -> Result<i64> {
         let mut stat = self.conn.prepare(
             r#"
-INSERT INTO onehistory_emacs_urls (url, title)
+INSERT INTO eww_history_urls (url, title)
     VALUES (:url, :title)
 ON CONFLICT (url)
     DO UPDATE SET
@@ -115,7 +115,7 @@ ON CONFLICT (url)
         let url_id = self.get_url_id(url, title)?;
         let mut stat = self.conn.prepare(
             r#"
-    INSERT INTO "onehistory_emacs_visits" (url_id, visit_time) VALUES(:url_id, :visit_time);
+    INSERT INTO "eww_history_visits" (url_id, visit_time) VALUES(:url_id, :visit_time);
 "#,
         )?;
         let affected = stat
@@ -145,7 +145,7 @@ SELECT
     visit_count,
     datetime (visit_time / 1000, 'unixepoch', 'localtime')
 FROM
-    onehistory_emacs_visits_view
+    eww_history_visits_view
 WHERE
     visit_time BETWEEN :start AND :end
     AND {}
@@ -213,8 +213,8 @@ mod tests {
 
     #[test]
     fn test_get_url_id() {
-        let tmp_dir = TempDir::new("oh").unwrap();
-        let db_path = tmp_dir.path().join("onehistory.db");
+        let tmp_dir = TempDir::new("eww").unwrap();
+        let db_path = tmp_dir.path().join("history.db");
         let db = Database::open(db_path).unwrap();
         let cases = vec![
             ("url1", "title1", 1),
@@ -240,7 +240,7 @@ mod tests {
 
         let mut stat = db
             .conn
-            .prepare("select url, title, visit_count from onehistory_emacs_urls")
+            .prepare("select url, title, visit_count from eww_history_urls")
             .unwrap();
         let mut rows = stat.query([]).unwrap();
         let mut id = 1;

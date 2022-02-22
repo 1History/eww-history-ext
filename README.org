@@ -1,4 +1,4 @@
-#+TITLE: Emacs onehistory
+#+TITLE: EWW History Extension
 #+DATE: 2022-02-21T11:41:31+0800
 #+AUTHOR: Jiacai Liu
 #+LANGUAGE: cn
@@ -6,10 +6,10 @@
 #+OPTIONS: toc:nil num:nil
 #+STARTUP: content
 
-[[https://github.com/1History/emacs-onehistory/actions/workflows/CI.yml][https://github.com/1History/emacs-onehistory/actions/workflows/CI.yml/badge.svg]]
+[[https://github.com/1History/eww-history-ext/actions/workflows/CI.yml][https://github.com/1History/eww-history-ext/actions/workflows/CI.yml/badge.svg]]
 
 #+begin_quote
-History solution for Emacs.
+Persist eww histories into SQLite.
 #+end_quote
 
 Currently supported package:
@@ -18,22 +18,22 @@ Currently supported package:
 
 * Usage
 #+BEGIN_SRC emacs-lisp
-(use-package onehistory
-  :load-path "~/emacs-onehistory"
-  :custom ((onehistory-elfeed-integration t))
+(use-package eww-history-ext
+  :load-path "~/eww-history-ext"
+  :custom ((eww-history-ext-elfeed-integration t))
   :config
-  (onehistory-enable))
+  (eww-history-ext-enable))
 #+END_SRC
-After enable onehistory, visit histories of eww and elfeed will be saved into onehistory, you can use =M-x onehistory-list= to browse saved histories.
+After enable eww-history-ext, visit histories of eww (and elfeed) will be saved into eww-history-ext, you can use =M-x eww-history-ext-list= to browse saved histories.
 * Install
 Clone this repo, build so library, and add it to load-path:
 #+begin_src bash
 make release
 #+end_src
-This command will output =onehistory-dyn.so= file in current directory, which we can add it to =load-path=
+This command will output =eww-history-dyn.so= file in current directory, which we can add it to =load-path=
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "/path/to/emacs-onehistory")
+(add-to-list 'load-path "/path/to/emacs-eww-history")
 #+END_SRC
 * Screenshots
 [[file:screenshots/list.png]]
@@ -45,9 +45,9 @@ This command will output =onehistory-dyn.so= file in current directory, which we
 (require 'rs-module)
 
 ;;; 重启加载 so 文件
-(rs-module/load "/tmp/emacs-onehistory/onehistory-dyn.so")
+(rs-module/load "/tmp/eww-history-ext/eww-history-ext-dyn.so")
 
 ;;; 查询最新历史数据
-(setq onehistory-db nil)
-(onehistory-query-latest)
+(setq eww-history-ext-db nil)
+(eww-history-ext-query-latest)
 #+END_SRC

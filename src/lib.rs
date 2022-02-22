@@ -7,10 +7,10 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 emacs::plugin_is_GPL_compatible!();
 
-#[emacs::module(name = "onehistory-dyn", separator = "--")]
+#[emacs::module(name = "eww-history-ext-dyn", separator = "--")]
 fn init(env: &Env) -> Result<Value<'_>> {
     env.message(format!(
-        "onehistory v{VERSION} dynamic module load success!"
+        "eww-history-ext-dyn v{VERSION} dynamic module load success!"
     ))
 }
 

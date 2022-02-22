@@ -110,7 +110,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "emacs-onehistory"
+name = "emacs_module"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3067bc974045ed2c6db333bd4fc30d3bdaafa6421a9a889fa7b2826b6f7f2fa"
+
+[[package]]
+name = "eww-history-ext"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -118,12 +124,6 @@ dependencies = [
  "rusqlite",
  "tempdir",
 ]
-
-[[package]]
-name = "emacs_module"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b3067bc974045ed2c6db333bd4fc30d3bdaafa6421a9a889fa7b2826b6f7f2fa"
 
 [[package]]
 name = "fallible-iterator"

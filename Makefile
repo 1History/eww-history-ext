@@ -1,6 +1,6 @@
 
-SRC = libemacs_onehistory.dylib
-DST = onehistory-dyn.so
+SRC = libeww_history_ext.dylib
+DST = eww-history-ext-dyn.so
 
 dev:
 	cargo build
