@@ -9,32 +9,30 @@
 [[https://github.com/1History/eww-history-ext/actions/workflows/CI.yml][https://github.com/1History/eww-history-ext/actions/workflows/CI.yml/badge.svg]]
 
 #+begin_quote
-Persist eww histories into SQLite.
+Persist EWW histories into SQLite.
 #+end_quote
 
-Currently supported package:
-- EWW
+Beside EWW, packages below are also supported:
 - Elfeed
 
 * Usage
+Clone this repo, build so library, and add it to load-path:
+#+begin_src bash
+make release
+#+end_src
+This command will output =eww-history-ext-dyn.so= file in current directory, which we can add it to =load-path=
+
 #+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "/path/to/eww-history-ext")
+
+;; This is config demo for use-package
 (use-package eww-history-ext
   :load-path "~/eww-history-ext"
   :custom ((eww-history-ext-elfeed-integration t))
   :config
   (eww-history-ext-enable))
 #+END_SRC
-After enable eww-history-ext, visit histories of eww (and elfeed) will be saved into eww-history-ext, you can use =M-x eww-history-ext-list= to browse saved histories.
-* Install
-Clone this repo, build so library, and add it to load-path:
-#+begin_src bash
-make release
-#+end_src
-This command will output =eww-history-dyn.so= file in current directory, which we can add it to =load-path=
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "/path/to/emacs-eww-history")
-#+END_SRC
+After enable eww-history-ext, histories of eww (and elfeed) will be saved into SQLite, you can use =M-x eww-history-ext-list= to browse saved histories.
 * Screenshots
 [[file:screenshots/list.png]]
 * Development
