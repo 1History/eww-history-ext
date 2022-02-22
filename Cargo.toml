@@ -1,5 +1,5 @@
 [package]
-name = "onehistory-emacs"
+name = "emacs-onehistory"
 version = "0.1.0"
 authors = ["Jiacai Liu <jiacai2050@gmail.com>"]
 edition = "2021"

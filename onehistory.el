@@ -130,8 +130,12 @@
 
 (define-derived-mode onehistory-mode tabulated-list-mode "onehistory" "History solution for Emacs"
   (setq tabulated-list-format [("Time" 20 t)
-                               ("Title" 50 nil)
-                               ("Location" 100 nil)])
+                               ("Title" 50 t)
+                               ("Location" 70 t)
+                               ("Visit Count" 10 (lambda (x y)
+                                                   (>
+                                                    (string-to-number (aref (cadr x) 3))
+                                                    (string-to-number (aref (cadr y) 3)))))])
   (setq tabulated-list-padding 2)
   (setq tabulated-list-sort-key (cons "Time" t))
   (tabulated-list-init-header))

@@ -20,6 +20,13 @@ Currently supported package:
 #+BEGIN_SRC emacs-lisp
 (setq onehistory-elfeed-integration t) ;; if you use elfeed
 (onehistory-enable)
+
+;; use-package config demo
+(use-package onehistory
+  :load-path "~/emacs-onehistory"
+  :custom ((onehistory-elfeed-integration t))
+  :config
+  (onehistory-enable))
 #+END_SRC
 After enable onehistory, visit histories of eww and elfeed will be saved into onehistory, you can use =M-x onehistory-list= to browse saved histories.
 * Install

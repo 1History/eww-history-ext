@@ -16,13 +16,14 @@ pub struct VisitDetail {
 }
 
 impl<'e> IntoLisp<'_> for VisitDetail {
+    // translate VisitDetail into `tabulated-list-entries` format
     fn into_lisp(self, env: &Env) -> Result<Value<'_>> {
         let detail = env.vector((
             // env.call("seconds-to-time", (self.visit_time / 1000,))?,
             self.visit_time,
             self.title,
             self.url,
-            // visit_count not used now
+            self.visit_count.to_string(),
         ))?;
         env.list((self.id.to_string(), detail))
     }
