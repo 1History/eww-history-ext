@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Release for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: libeww_history_ext.so
+            asset_name: linux-eww-history-ext-dyn.so
+          - os: windows-latest
+            artifact_name: eww_history_ext.dll
+            asset_name: eww-history-ext.dll
+          - os: macos-latest
+            artifact_name: libeww_history_ext.dylib
+            asset_name: macos-eww-history-ext-dyn.so
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build --release --locked
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/release/${{ matrix.artifact_name }}
+        asset_name: ${{ matrix.asset_name }}
+        tag: ${{ github.ref }}
