@@ -9,23 +9,24 @@
 [[https://github.com/1History/eww-history-ext/actions/workflows/CI.yml][https://github.com/1History/eww-history-ext/actions/workflows/CI.yml/badge.svg]]
 
 #+begin_quote
-Persist EWW histories into SQLite.
+Persist [[https://www.gnu.org/software/emacs/manual/html_mono/eww.html][EWW]] histories into SQLite.
 #+end_quote
 
-Beside EWW, packages below are also supported:
-- Elfeed
+Besides [[https://www.gnu.org/software/emacs/manual/html_mono/eww.html][EWW]], packages below are also supported:
+- [[https://github.com/skeeto/elfeed][elfeed]]
 
 Welcome to [[https://github.com/1History/eww-history-ext/issues][open an issue]] if you have any issues or suggestions.
 
 * Usage
-Clone this repo, build so library, and add it to load-path:
-#+begin_src bash
-make release
-#+end_src
-This command will output =eww-history-ext-dyn.so= file in current directory, which we can add it to =load-path=
+1. Download [[https://github.com/1History/eww-history-ext/blob/master/eww-history-ext.el][eww-history-ext.el]]
+2. Download required shared object from [[https://github.com/1History/eww-history-ext/releases][release page]] according to your operating system, and rename it to =eww-history-ext-dyn.so= or =dll= suffix if you are on Windows
+3. Put =el= and =so= files under =load-path=
+
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "/path/to/eww-history-ext")
+;; 1. git clone https://github.com/1History/eww-history-ext.git
+;; 2. wget *.so file, and rename to correct filename
+;; 3. (add-to-list 'load-path "/path/to/eww-history-ext")
 
 ;; This is config demo for use-package
 (use-package eww-history-ext
@@ -40,7 +41,7 @@ In =*eww-history-ext*= buffer,
 - Only latest 1000 histories are displayed by default, users can customize this via =eww-history-ext-default-query-limit=.
 - Press =s= to filter histories with specific keyword.
 - Press =RET= to visit history at point
-- Press column name =Time=, =VisitCount= to sort.
+- Press column name to sort.
 
 * Screenshots
 [[file:screenshots/list.png]]
