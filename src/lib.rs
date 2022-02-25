@@ -25,6 +25,11 @@ fn save_history(db: &Database, url: String, title: String) -> Result<()> {
 }
 
 #[defun]
+fn delete_history(db: &Database, id: i64) -> Result<()> {
+    db.delete_history(id)
+}
+
+#[defun]
 fn query_histories_by_range(
     db: &Database,
     start_secs: i64,

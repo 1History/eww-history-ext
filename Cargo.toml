@@ -1,6 +1,6 @@
 [package]
 name = "eww-history-ext"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Jiacai Liu <jiacai2050@gmail.com>"]
 edition = "2021"
 publish = false

@@ -194,6 +194,45 @@ ORDER BY
         self.query_inner(0, i64::MAX, Some(limit), keyword)
     }
 
+    // Note: Update eww_history_visits/urls has no transaction now
+    pub fn delete_history(&self, id: i64) -> Result<()> {
+        let mut stat = self.conn.prepare(
+            r#"
+DELETE FROM eww_history_visits
+WHERE id = :id
+RETURNING
+    url_id;
+"#,
+        )?;
+
+        match stat.query_row(
+            named_params! {
+                ":id":id,
+            },
+            |r| r.get(0),
+        ) {
+            Err(e) if matches!(e, rusqlite::Error::QueryReturnedNoRows) => return Ok(()),
+            Err(e) => return Err(anyhow::Error::new(e)),
+            Ok::<i64, _>(url_id) => {
+                // visit_count can be zero in urls table
+                let _affected = self.conn.execute(
+                    r#"
+UPDATE
+    eww_history_urls
+SET
+    visit_count = visit_count - 1
+WHERE
+    id = :id
+"#,
+                    named_params! {
+                           ":id": url_id,
+                    },
+                )?;
+                Ok(())
+            }
+        }
+    }
+
     fn keyword_to_like(kw: Option<String>) -> String {
         kw.map_or_else(
             || "1".to_string(),
@@ -207,9 +246,41 @@ ORDER BY
 
 #[cfg(test)]
 mod tests {
+    use std::{thread, time::Duration};
+
     use tempdir::TempDir;
 
     use super::*;
+
+    #[test]
+    fn test_delete_history() {
+        let tmp_dir = TempDir::new("eww").unwrap();
+        let db_path = tmp_dir.path().join("history.db");
+        let db = Database::open(db_path).unwrap();
+        let cases = vec![
+            ("https://www.baidu.com", "百度一下"),
+            ("https://www.qq.com", "腾讯"),
+            ("https://emacstalk.github.io", "EmacsTalk"),
+            ("https://emacstalk.github.io", "EmacsTalk"),
+        ];
+        for (url, title) in cases {
+            db.save_history(url.to_string(), title.to_string()).unwrap();
+            thread::sleep(Duration::from_millis(50));
+        }
+        let histories = db
+            .query_latest_histories(10, Some("emacs".to_string()))
+            .unwrap();
+        assert_eq!(2, histories.0.len());
+        assert_eq!(2, histories.0[0].visit_count);
+        assert_eq!(2, histories.0[1].visit_count);
+
+        db.delete_history(4).unwrap();
+        let histories = db
+            .query_latest_histories(10, Some("emacs".to_string()))
+            .unwrap();
+        assert_eq!(1, histories.0.len());
+        assert_eq!(1, histories.0[0].visit_count);
+    }
 
     #[test]
     fn test_get_url_id() {
