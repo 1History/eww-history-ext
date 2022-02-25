@@ -211,8 +211,8 @@ RETURNING
             },
             |r| r.get(0),
         ) {
-            Err(e) if matches!(e, rusqlite::Error::QueryReturnedNoRows) => return Ok(()),
-            Err(e) => return Err(anyhow::Error::new(e)),
+            Err(e) if matches!(e, rusqlite::Error::QueryReturnedNoRows) => Ok(()),
+            Err(e) => Err(anyhow::Error::new(e)),
             Ok::<i64, _>(url_id) => {
                 // visit_count can be zero in urls table
                 let _affected = self.conn.execute(
@@ -237,7 +237,7 @@ WHERE
         kw.map_or_else(
             || "1".to_string(),
             |v| {
-                let v = v.replace("'", "");
+                let v = v.replace('\'', "");
                 format!("(url like '%{v}%' or title like '%{v}%')")
             },
         )
