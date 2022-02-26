@@ -3,7 +3,7 @@
 ;; Copyright (C) 2022 Jiacai Liu
 
 ;; Author: Jiacai Liu <jiacai2050@gmail.com>
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: eww, elfeed, history
 ;; URL: https://github.com/1History/eww-history-ext
@@ -62,6 +62,7 @@
     (define-key map (kbd "w") 'eww-history-ext-copy-history-url)
     (define-key map (kbd "t") 'eww-history-ext-copy-history-title)
     (define-key map (kbd "s") 'eww-history-ext-search-by-keyword)
+    (define-key map (kbd "d") 'eww-history-ext-delete-history)
     (define-key map (kbd "s-u") 'tabulated-list-revert)
     map)
   "Local keymap for eww-history-ext mode buffers.")
@@ -160,6 +161,14 @@
       (progn
         (message title)
         (kill-new title))
+    (user-error "There is no history at point")))
+
+(defun eww-history-ext-delete-history ()
+  "Delete history at point."
+  (interactive)
+  (if-let ((entry (tabulated-list-delete-entry)))
+      (eww-history-ext-dyn--delete-history eww-history-ext-db
+                                           (string-to-number (car entry)))
     (user-error "There is no history at point")))
 
 (defun eww-history-ext-tabulated-list-revert (&optional revert)
