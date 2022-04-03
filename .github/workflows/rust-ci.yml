@@ -1,4 +1,4 @@
-name: CI
+name: Rust CI
 
 on:
   workflow_dispatch:
@@ -7,11 +7,11 @@ on:
       - 'src/**'
 
 jobs:
-  build:
+  rust-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v1
-      - uses: icepuma/rust-action@master
+      - uses: icepuma/rust-action@1.59.0
         with:
-          args: cargo fmt -- --check && cargo clippy -- -Dwarnings && cargo test
+          args: make rust-lint rust-test
