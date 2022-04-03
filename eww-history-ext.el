@@ -3,7 +3,7 @@
 ;; Copyright (C) 2022 Jiacai Liu
 
 ;; Author: Jiacai Liu <jiacai2050@gmail.com>
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: eww, elfeed, history
 ;; URL: https://github.com/1History/eww-history-ext
@@ -113,11 +113,11 @@
   "Enable eww-history-ext to save history"
   (interactive)
   (when eww-history-ext-eww-integration
-    (advice-add 'elfeed-search-show-entry :around
-                'eww-history-ext-elfeed-search-show-entry-around))
+    (add-hook 'eww-after-render-hook 'eww-history-ext-eww-hook))
 
   (when eww-history-ext-elfeed-integration
-    (add-hook 'eww-after-render-hook 'eww-history-ext-eww-hook)))
+    (advice-add 'elfeed-search-show-entry :around
+                'eww-history-ext-elfeed-search-show-entry-around)))
 
 ;;;###autoload
 (defun eww-history-ext-disable ()

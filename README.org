@@ -6,7 +6,8 @@
 #+OPTIONS: toc:nil num:nil
 #+STARTUP: content
 
-[[https://github.com/1History/eww-history-ext/actions/workflows/CI.yml][https://github.com/1History/eww-history-ext/actions/workflows/CI.yml/badge.svg]]
+[[https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml][https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml/badge.svg]]
+[[https://github.com/1History/eww-history-ext/actions/workflows/rust-ci.yml][https://github.com/1History/eww-history-ext/actions/workflows/rust-ci.yml/badge.svg]]
 
 #+begin_quote
 Persist [[https://www.gnu.org/software/emacs/manual/html_mono/eww.html][EWW]] histories into SQLite.

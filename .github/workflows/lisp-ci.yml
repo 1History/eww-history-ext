@@ -1,0 +1,39 @@
+name: ELisp CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.org'
+      - '.dir-locals.el'
+
+jobs:
+  lisp-test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        emacs_version:
+          - 27.1
+          - snapshot
+    steps:
+      - uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs_version }}
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: so-file
+          path: ./target/debug/libeww_history_ext.so
+      - uses: actions/download-artifact@v3
+        with:
+          name: so-file
+          path: ./target
+      - run: mv ./target/libeww_history_ext.so eww-history-ext-dyn.so && make lisp-test
