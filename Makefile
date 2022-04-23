@@ -18,7 +18,7 @@ rust-test:
 
 lisp-test:
 	pwd && ls -alh
-	emacs -Q -batch -l ert -l eww-history-ext-test.el -f ert-run-tests-batch-and-exit
+	emacs -Q -batch -l eww-history-ext-test.el -f ert-run-tests-batch-and-exit
 
 clean:
 	rm -f *.so

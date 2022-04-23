@@ -20,10 +20,12 @@ Welcome to [[https://github.com/1History/eww-history-ext/issues][open an issue]]
 
 * Usage
 1. Download [[https://github.com/1History/eww-history-ext/blob/master/eww-history-ext.el][eww-history-ext.el]]
-2. Download required shared object from [[https://github.com/1History/eww-history-ext/releases][release page]] according to your operating system, and rename it to =eww-history-ext-dyn.so= or =dll= suffix if you are on Windows
+2. Download required shared object, and rename it to =eww-history-ext-dyn.so= or =dll= suffix if you are on Windows
+   - From [[https://github.com/1History/eww-history-ext/releases][release page]] according to your operating system
+   - Or you can build it yourself by =make release=. Be sure [[https://doc.rust-lang.org/cargo/getting-started/installation.html][cargo]] is preinstalled.
 3. Put =el= and =so= files under =load-path=
 
-
+Here is a =use-package= config demo:
 #+BEGIN_SRC emacs-lisp
 ;; 1. git clone https://github.com/1History/eww-history-ext.git
 ;; 2. wget *.so file, and rename to correct filename
