@@ -86,6 +86,7 @@
     (define-key map (kbd "t") 'eww-history-ext-copy-history-title)
     (define-key map (kbd "s") 'eww-history-ext-search-by-keyword)
     (define-key map (kbd "d") 'eww-history-ext-delete-history)
+    (define-key map (kbd "b") 'eww-history-ext-add-bookmark)
     (define-key map (kbd "s-u") 'tabulated-list-revert)
     map)
   "Local keymap for eww-history-ext mode buffers.")
@@ -193,6 +194,14 @@
       (eww-history-ext-dyn--delete-history eww-history-ext-db
                                            (string-to-number (car entry)))
     (user-error "There is no history at point")))
+
+(defun eww-history-ext-add-bookmark ()
+  "Bookmark history at point."
+  (interactive)
+  (when-let* ((title (eww-history-ext--get-title))
+              (url (eww-history-ext--get-url))
+              (eww-data `(:url ,url :title ,title)))
+    (eww-add-bookmark)))
 
 (defun eww-history-ext-tabulated-list-revert (&optional revert)
   (setq-local eww-history-ext-query-keyword eww-history-ext-default-query-keyword)
