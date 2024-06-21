@@ -174,8 +174,8 @@
   (interactive)
   (if-let ((url (eww-history-ext--get-url)))
       (progn
-        (message url)
-        (kill-new url))
+	(kill-new url)
+        (message "Copied %s to kill ring" url))
     (user-error "There is no history at point")))
 
 (defun eww-history-ext-copy-history-title ()
