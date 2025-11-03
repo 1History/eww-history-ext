@@ -1,7 +1,7 @@
 mod db;
 mod util;
 use db::{Database, Histories};
-use emacs::{defun, Env, Result, Value};
+use emacs::{Env, Result, Value, defun};
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 

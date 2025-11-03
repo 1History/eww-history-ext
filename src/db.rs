@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::{Context, Result};
 use emacs::{Env, IntoLisp, Value};
-use rusqlite::{named_params, Connection};
+use rusqlite::{Connection, named_params};
 
 use crate::util::get_epoch_ms;
 

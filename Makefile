@@ -14,6 +14,7 @@ rust-lint:
 	cargo fmt -- --check && cargo clippy -- -Dwarnings
 
 fix:
+	cargo fmt
 	cargo fix --allow-dirty --allow-staged
 
 rust-test:

@@ -21,7 +21,7 @@ jobs:
             asset_name: eww-history-ext-dyn.dll
           - os: macos-latest
             artifact_name: libeww_history_ext.dylib
-            asset_name: macos-x86-64-eww-history-ext-dyn.so
+            asset_name: macos-aarch64-eww-history-ext-dyn.so
 
     steps:
     - uses: actions/checkout@v4

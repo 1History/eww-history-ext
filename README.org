@@ -1,10 +1,7 @@
 #+TITLE: EWW History Extension
 #+DATE: 2022-02-21T11:41:31+0800
+#+LASTMOD: 2025-11-03T10:00:28+0800
 #+AUTHOR: Jiacai Liu
-#+LANGUAGE: cn
-#+EMAIL: jiacai2050+org@gmail.com
-#+OPTIONS: toc:nil num:nil
-#+STARTUP: content
 
 [[https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml][https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml/badge.svg]]
 [[https://github.com/1History/eww-history-ext/actions/workflows/rust-ci.yml][https://github.com/1History/eww-history-ext/actions/workflows/rust-ci.yml/badge.svg]]

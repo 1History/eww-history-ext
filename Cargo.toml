@@ -1,8 +1,8 @@
 [package]
 name = "eww-history-ext"
-version = "0.2.0"
-authors = ["Jiacai Liu <jiacai2050@gmail.com>"]
-edition = "2021"
+version = "0.2.3"
+authors = ["Jiacai Liu <dev@liujiacai.net>"]
+edition = "2024"
 publish = false
 
 [lib]
@@ -17,6 +17,5 @@ anyhow = { version = "1.0" }
 tempdir = "0.3"
 
 [profile.release]
-# only in nightly now
-# strip = true
+strip = true
 lto = true
