@@ -1,6 +1,6 @@
-#+TITLE: EWW History Extension
+#+TITLE: eww-history-ext
 #+DATE: 2022-02-21T11:41:31+0800
-#+LASTMOD: 2025-11-03T10:00:28+0800
+#+LASTMOD: 2025-11-03T11:02:21+0800
 #+AUTHOR: Jiacai Liu
 
 [[https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml][https://github.com/1History/eww-history-ext/actions/workflows/lisp-ci.yml/badge.svg]]
@@ -22,19 +22,18 @@ Welcome to [[https://github.com/1History/eww-history-ext/issues][open an issue]]
    - Or you can build it yourself by =make release=. Be sure [[https://doc.rust-lang.org/cargo/getting-started/installation.html][cargo]] is preinstalled.
 3. Put =el= and =so= files under =load-path=
 
-Here is a =use-package= config demo:
+Here is a =use-package= config demo(=:vc= is introduced since Emacs 30.1):
 #+BEGIN_SRC emacs-lisp
-;; 1. git clone https://github.com/1History/eww-history-ext.git
-;; 2. wget *.so file, and rename to correct filename
-;; 3. (add-to-list 'load-path "/path/to/eww-history-ext")
-
-;; This is config demo for use-package
 (use-package eww-history-ext
-  :load-path "~/eww-history-ext"
-  :custom ((eww-history-ext-elfeed-integration t))
+  :vc (:url "https://github.com/1History/eww-history-ext.git"
+       :rev "v0.2.2"
+       :make "release")
+  :custom ((eww-history-ext-elfeed-integration t)
+           (eww-history-ext-db-file "/path/to/your/eww-history-ext.db")) ;; customize your db file location
   :config
   (eww-history-ext-enable))
 #+END_SRC
+
 After enable eww-history-ext, histories of eww (and elfeed) will be saved into SQLite, you can use =M-x eww-history-ext-list= to browse saved histories.
 
 In =*eww-history-ext*= buffer,

@@ -117,7 +117,7 @@ checksum = "b3067bc974045ed2c6db333bd4fc30d3bdaafa6421a9a889fa7b2826b6f7f2fa"
 
 [[package]]
 name = "eww-history-ext"
-version = "0.2.3"
+version = "0.2.2"
 dependencies = [
  "anyhow",
  "emacs",
