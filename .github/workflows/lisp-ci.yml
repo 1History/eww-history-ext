@@ -30,12 +30,12 @@ jobs:
           toolchain: stable
       - run: |
           cargo build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: so-file
+          name: so-file-${{ matrix.emacs_version }}
           path: ./target/debug/libeww_history_ext.so
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: so-file
+          name: so-file-${{ matrix.emacs_version }}
           path: ./target
       - run: mv ./target/libeww_history_ext.so eww-history-ext-dyn.so && make lisp-test
