@@ -46,6 +46,17 @@ In =*eww-history-ext*= buffer,
 - Press =RET= to visit history at point
 - Press column name to sort.
 
+** macOS
+If you are using macOS, you may see error like below when loading shared object:
+#+BEGIN_EXAMPLE
+eww-history-ext-dyn.so not valid for use in process: library load disallowed by system policy)
+#+END_EXAMPLE
+
+Try
+#+BEGIN_EXAMPLE
+xattr -d com.apple.quarantine <location_of_eww-history-ext-dyn.so
+#+END_EXAMPLE
+
 * Screenshots
 [[file:screenshots/list.png]]
 * Development
@@ -64,6 +75,6 @@ In =*eww-history-ext*= buffer,
 #+END_SRC
 
 * LICENSE
-Copyright (c) 2022 Jiacai Liu <jiacai2050+ewwhistory@gmail.com>
+Copyright (c) 2022 Jiacai Liu <dev@liujiacai.net>
 
 eww-history-ext is distributed under [[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]] license.

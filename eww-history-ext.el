@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2022 Jiacai Liu
 
-;; Author: Jiacai Liu <jiacai2050@gmail.com>
-;; Version: 0.2.1
+;; Author: Jiacai Liu <dev@liujiacai.net>
+;; Version: 0.2.2
 ;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: eww, elfeed, history
 ;; URL: https://github.com/1History/eww-history-ext
@@ -174,8 +174,8 @@
   (interactive)
   (if-let ((url (eww-history-ext--get-url)))
       (progn
-        (message url)
-        (kill-new url))
+        (kill-new url)
+        (message "Copied %s to kill ring" url))
     (user-error "There is no history at point")))
 
 (defun eww-history-ext-copy-history-title ()

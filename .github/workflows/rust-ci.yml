@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v1
-      - uses: icepuma/rust-action@1.59.0
-        with:
-          args: make rust-lint rust-test
+      - uses: actions/checkout@v4
+      - run: |
+          make rust-lint rust-test

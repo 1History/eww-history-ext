@@ -13,6 +13,9 @@ release:
 rust-lint:
 	cargo fmt -- --check && cargo clippy -- -Dwarnings
 
+fix:
+	cargo fix --allow-dirty --allow-staged
+
 rust-test:
 	cargo test
 
@@ -22,3 +25,6 @@ lisp-test:
 
 clean:
 	rm -f *.so
+
+
+.PHONY: dev release rust-lint fix rust-test lisp-test clean

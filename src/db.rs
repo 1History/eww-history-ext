@@ -15,7 +15,7 @@ pub struct VisitDetail {
     pub visit_time: String,
 }
 
-impl<'e> IntoLisp<'_> for VisitDetail {
+impl IntoLisp<'_> for VisitDetail {
     // translate VisitDetail into `tabulated-list-entries` format
     fn into_lisp(self, env: &Env) -> Result<Value<'_>> {
         let detail = env.vector((
@@ -31,7 +31,7 @@ impl<'e> IntoLisp<'_> for VisitDetail {
 
 pub struct Histories(Vec<VisitDetail>);
 
-impl<'e> IntoLisp<'_> for Histories {
+impl IntoLisp<'_> for Histories {
     fn into_lisp(self, env: &Env) -> Result<Value<'_>> {
         let vector = env.make_vector(self.0.len(), ())?;
         for (i, v) in self.0.into_iter().enumerate() {
@@ -211,7 +211,7 @@ RETURNING
             },
             |r| r.get(0),
         ) {
-            Err(e) if matches!(e, rusqlite::Error::QueryReturnedNoRows) => Ok(()),
+            Err(rusqlite::Error::QueryReturnedNoRows) => Ok(()),
             Err(e) => Err(anyhow::Error::new(e)),
             Ok::<i64, _>(url_id) => {
                 // visit_count can be zero in urls table
@@ -303,7 +303,7 @@ mod tests {
             );
         }
 
-        let cases = vec![
+        let cases = [
             ("url1", "title1111", 4),
             ("url2", "title2", 1),
             ("url3", "title3", 1),
