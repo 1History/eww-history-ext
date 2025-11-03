@@ -64,6 +64,6 @@ In =*eww-history-ext*= buffer,
 #+END_SRC
 
 * LICENSE
-Copyright (c) 2022 Jiacai Liu <jiacai2050+ewwhistory@gmail.com>
+Copyright (c) 2022 Jiacai Liu <dev@liujiacai.net>
 
 eww-history-ext is distributed under [[https://www.gnu.org/licenses/gpl-3.0.txt][GPL-3.0]] license.
